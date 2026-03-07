@@ -1,0 +1,14 @@
+# Node modules
+node_modules/
+npm-debug.log
+
+# Video Uploads & Outputs
+backend/uploads/
+backend/outputs/
+
+# Environment variables
+.env
+
+# Angular build files
+dist/
+.angular/
