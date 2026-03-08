@@ -1,0 +1,6 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Abhi ke liye container ko background me zinda rakhne ke liye standby command
+CMD ["tail", "-f", "/dev/null"]

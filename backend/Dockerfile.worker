@@ -1,0 +1,9 @@
+FROM node:20-alpine
+
+# Video processing ke liye FFmpeg install karna sabse zaroori hai
+RUN apk update && apk add --no-cache ffmpeg
+
+WORKDIR /app
+
+# Standby command
+CMD ["tail", "-f", "/dev/null"]

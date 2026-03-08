@@ -1,0 +1,76 @@
+
+
+services:
+  # 1. Database (PostgreSQL)
+  postgres:
+    image: postgres:15-alpine
+    container_name: video_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: videodb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # 2. In-Memory Task Queue (Redis)
+  redis:
+    image: redis:7-alpine
+    container_name: video_redis
+    ports:
+      - "6379:6379"
+
+  # 3. Main API Server (Node.js)
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.api
+    container_name: video_api
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://admin:adminpassword@postgres:5432/videodb
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      # # Prevents local node_modules from overriding container's
+     # - shared_data:/app/uploads
+
+  # 4. Render Worker (Node.js + FFmpeg)
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.worker
+    container_name: video_worker
+    environment:
+      - DATABASE_URL=postgres://admin:adminpassword@postgres:5432/videodb
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      # - shared_data:/app/uploads
+
+  # 5. Frontend (Angular UI)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: video_frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+# Data Persistence (Data safe rahega container delete hone par bhi)
+volumes:
+  pgdata:
+ # shared_data:
