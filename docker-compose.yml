@@ -34,11 +34,8 @@ services:
     depends_on:
       - postgres
       - redis
-    command: sh -c "npm install && npm start" # 👈 BRAHMASTRA
     volumes:
-      - ./backend:/app
-      - /app/node_modules # 👈 PROTECTION
-      - shared_data:/app/uploads # 👈 VIDEO TRANSFER FOLDER
+      - shared_data:/app/uploads
 
   # 4. Render Worker (Node.js + FFmpeg)
   worker:
@@ -53,11 +50,8 @@ services:
     depends_on:
       - postgres
       - redis
-    command: sh -c "npm install && npm start" # 👈 BRAHMASTRA
     volumes:
-      - ./backend:/app
-      - /app/node_modules # 👈 PROTECTION
-      - shared_data:/app/uploads # 👈 VIDEO TRANSFER FOLDER
+      - shared_data:/app/uploads
 
   # 5. Frontend (Angular UI)
   frontend:
@@ -67,10 +61,6 @@ services:
     container_name: video_frontend
     ports:
       - "4200:4200"
-    command: sh -c "npm install && npm start" # 👈 BRAHMASTRA
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules # 👈 PROTECTION
 
   # 6. Nginx Setup
   nginx:
@@ -86,4 +76,4 @@ services:
 # Data Persistence (Data safe rahega container delete hone par bhi)
 volumes:
   pgdata:
-  shared_data: # 👈 UNCOMMENTED
+  shared_data:
