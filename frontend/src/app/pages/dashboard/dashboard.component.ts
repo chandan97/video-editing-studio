@@ -53,7 +53,8 @@ export class DashboardComponent implements OnInit { // 👈 implements OnInit ad
   loadProjects() {
     // Note: Agar tumhara backend GET route kuch aur tha (jaise /api/projects/list), toh isko change kar lena
     //const apiUrl = 'http://localhost:3000/api/projects';
-    const apiUrl = 'http://34.100.162.127:3000/api/projects'; 
+    // const apiUrl = 'http://34.100.162.127:3000/api/projects'; 
+    const apiUrl = 'api/projects';
 
     this.http.get(apiUrl).subscribe({
       next: (res: any) => {
@@ -74,7 +75,8 @@ export class DashboardComponent implements OnInit { // 👈 implements OnInit ad
 
     this.isCreating = true;
     //const apiUrl = 'http://localhost:3000/api/projects/create';
-    const apiUrl = 'http://34.100.162.127:3000/api/projects/create';
+    // const apiUrl = 'http://34.100.162.127:3000/api/projects/create';
+    const apiUrl = '/api/projects/create';
 
     const formData = new FormData();
     formData.append('userId', '1'); 
